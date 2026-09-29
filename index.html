@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cybersecurity Home Lab Report</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+
+    <div class="container">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark"></span>
+          Home Lab Security Report
+        </div>
+        <div class="status">Operational Status: Secure</div>
+      </header>
+
+      <section class="hero">
+        <div class="panel hero-copy">
+          <div class="eyebrow">Cyber Defense Review</div>
+          <h1>Securing the <span class="highlight">digital perimeter</span> of a modern home lab.</h1>
+          <p class="summary">
+            This report summarizes the current posture of the home lab environment, including attack surface visibility,
+            controls in place, operational resilience, and the next-phase security roadmap needed to protect critical services.
+          </p>
+
+          <div class="cta-row">
+            <a class="button primary" href="#summary">View Summary</a>
+            <a class="button secondary" href="#roadmap">Review Roadmap</a>
+          </div>
+        </div>
+
+        <aside class="panel score-card" aria-label="Security score panel">
+          <div>
+            <div class="mini-label">Security Posture Index</div>
+            <div class="ring-wrap">
+              <div class="risk-ring" style="--value: 78; position: relative;">
+                <span class="risk-value">78</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="score-meta">
+            <span class="mini-label">Current Assessment</span>
+            <strong>Moderately Strong</strong>
+          </div>
+        </aside>
+      </section>
+
+      <section class="stats" aria-label="Key metrics">
+        <div class="panel stat">
+          <span class="value">12</span>
+          <span class="label">Protected Assets</span>
+        </div>
+        <div class="panel stat">
+          <span class="value">94%</span>
+          <span class="label">Patch Coverage</span>
+        </div>
+        <div class="panel stat">
+          <span class="value">7</span>
+          <span class="label">Monitoring Rules</span>
+        </div>
+        <div class="panel stat">
+          <span class="value">2.4s</span>
+          <span class="label">Avg Response</span>
+        </div>
+      </section>
+
+      <main class="content" id="summary">
+        <section class="panel section">
+          <div class="section-header">
+            <h2>Executive Summary</h2>
+            <span class="pill">Overview</span>
+          </div>
+
+          <div class="overview-grid">
+            <div class="mini-card">
+              <h3>Environment</h3>
+              <p>Virtualized network with segmented VLANs, centralized firewalling, and external service exposure limited to approved public endpoints.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Threats</h3>
+              <p>Most risk comes from credential reuse, stale endpoint access, and opportunistic exploitation against exposed management interfaces.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Controls</h3>
+              <p>Strong baseline includes MFA, strict ACLs, encrypted secrets storage, and active log collection for anomaly detection.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Priority</h3>
+              <p>Continue hardening identity controls, external attack surface reduction, and regular backup validation to sustain resilience.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel section">
+          <div class="section-header">
+            <h2>Risk Distribution</h2>
+            <span class="pill">Threats</span>
+          </div>
+
+          <div class="risk-bars">
+            <div class="bar-row">
+              <div class="bar-head"><span>Credential Abuse</span><span>82%</span></div>
+              <div class="bar"><span style="width: 82%;"></span></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-head"><span>Misconfigured Exposure</span><span>64%</span></div>
+              <div class="bar amber"><span style="width: 64%;"></span></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-head"><span>Phishing Lures</span><span>57%</span></div>
+              <div class="bar green"><span style="width: 57%;"></span></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-head"><span>Ransomware Path</span><span>39%</span></div>
+              <div class="bar red"><span style="width: 39%;"></span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel section">
+          <div class="section-header">
+            <h2>Security Timeline</h2>
+            <span class="pill">Progress</span>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="dot"></div>
+              <div>
+                <h3>Phase 01 — Baseline Lockdown</h3>
+                <p>Network segmentation and firewall policy refinement reduced lateral movement opportunities across the internal lab.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="dot"></div>
+              <div>
+                <h3>Phase 02 — Identity Hardening</h3>
+                <p>Mandatory MFA, role-based access restrictions, and secret rotation improved account resilience against credential attacks.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="dot"></div>
+              <div>
+                <h3>Phase 03 — Detection & Response</h3>
+                <p>Centralized logging and alerting created a reliable first-line detection layer for suspicious activity and failed logins.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel section" id="roadmap">
+          <div class="section-header">
+            <h2>Priority Actions</h2>
+            <span class="pill">Next 90 Days</span>
+          </div>
+
+          <div class="checklist">
+            <div class="check">
+              <div class="icon">✓</div>
+              <p>Reduce public exposure by moving management interfaces behind VPN-only access and eliminating default admin paths.</p>
+            </div>
+            <div class="check">
+              <div class="icon">✓</div>
+              <p>Deploy encrypted offline backups and test restore procedures quarterly to confirm data recoverability under pressure.</p>
+            </div>
+            <div class="check">
+              <div class="icon">✓</div>
+              <p>Introduce alert tuning for brute-force attempts, unusual network flows, and service-level anomalies using SIEM correlation rules.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel section">
+          <div class="section-header">
+            <h2>Implementation Roadmap</h2>
+            <span class="pill">Plan</span>
+          </div>
+
+          <div class="roadmap">
+            <div class="phase">
+              <div class="phase-top"><strong>Phase 1: Visibility</strong><span>30%</span></div>
+              <div class="progress"><i style="width: 30%;"></i></div>
+              <p>Inventory all assets, map traffic flows, and verify current external exposure to reduce blind spots.</p>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><strong>Phase 2: Hardening</strong><span>60%</span></div>
+              <div class="progress"><i style="width: 60%;"></i></div>
+              <p>Harden remote access, enforce passwordless authentication, and apply zero-trust policy checks to critical services.</p>
+            </div>
+            <div class="phase">
+              <div class="phase-top"><strong>Phase 3: Recovery</strong><span>80%</span></div>
+              <div class="progress"><i style="width: 80%;"></i></div>
+              <p>Validate backups, automate incident runbooks, and refine response playbooks for malicious activity containment.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
