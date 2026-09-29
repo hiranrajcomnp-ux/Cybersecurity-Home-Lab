@@ -300,6 +300,43 @@
             scroll-margin-top: 90px;
         }
 
+        .topic-detail > summary {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0 14px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .topic-detail > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .topic-detail > summary h2 {
+            margin-bottom: 22px;
+        }
+
+        .topic-detail > summary::after {
+            content: "+";
+            margin: 0 0 22px auto;
+            color: var(--accent);
+            font: 1.5rem monospace;
+        }
+
+        .topic-detail[open] > summary::after {
+            content: "−";
+        }
+
+        .topic-detail > summary:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .topic-detail[open] > :not(summary) {
+            animation: galleryReveal 0.3s ease both;
+        }
+
         .section-number {
             color: var(--accent);
             font-family: monospace;
@@ -368,6 +405,91 @@
         .card:hover {
             transform: translateY(-4px);
             border-color: #3b4b66;
+        }
+
+        .collection-detail,
+        .audit-policy-detail,
+        .summary-detail {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .card.collection-detail,
+        .card.audit-policy-detail,
+        .card.summary-detail {
+            padding: 0;
+        }
+
+        .collection-detail > summary,
+        .audit-policy-detail > summary,
+        .summary-detail > summary {
+            position: relative;
+            display: block;
+            min-height: 118px;
+            padding: 23px 50px 23px 23px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .collection-detail > summary::-webkit-details-marker,
+        .audit-policy-detail > summary::-webkit-details-marker,
+        .summary-detail > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .collection-detail > summary::after,
+        .audit-policy-detail > summary::after,
+        .summary-detail > summary::after {
+            content: "+";
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            color: var(--accent);
+            font: 1.5rem monospace;
+        }
+
+        .collection-detail[open] > summary::after,
+        .audit-policy-detail[open] > summary::after,
+        .summary-detail[open] > summary::after {
+            content: "−";
+        }
+
+        .collection-detail > summary:focus-visible,
+        .audit-policy-detail > summary:focus-visible,
+        .summary-detail > summary:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: -3px;
+        }
+
+        .collection-hint,
+        .audit-policy-hint {
+            margin: 0;
+            color: var(--accent);
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+
+        .collection-content,
+        .audit-policy-content,
+        .summary-content {
+            padding: 18px 23px 8px;
+            border-top: 1px solid var(--border);
+            animation: galleryReveal 0.3s ease both;
+        }
+
+        .collection-content h4,
+        .audit-policy-content h4,
+        .summary-content h4 {
+            margin-bottom: 6px;
+            color: #f1f5f9;
+        }
+
+        .collection-content ul,
+        .audit-policy-content ul,
+        .audit-policy-content ol,
+        .summary-content ul,
+        .summary-content ol {
+            margin-bottom: 16px;
         }
 
         .card-icon {
@@ -757,11 +879,78 @@
             margin: 24px 0;
         }
 
+        .screenshot-disclosure {
+            margin: 20px 0 28px;
+            scroll-margin-top: 88px;
+        }
+
+        .screenshot-disclosure summary {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid var(--accent-dark);
+            border-radius: 7px;
+            background: rgba(34, 211, 238, 0.08);
+            color: var(--accent);
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: 700;
+            list-style: none;
+        }
+
+        .screenshot-disclosure summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .screenshot-disclosure summary::before {
+            content: "+";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .screenshot-disclosure[open] summary::before {
+            content: "−";
+        }
+
+        .screenshot-disclosure summary:focus-visible,
+        .screenshot-open:focus-visible,
+        .viewer-close:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .screenshot-disclosure[open] .screenshot-gallery {
+            animation: galleryReveal 0.45s ease both;
+        }
+
+        @keyframes galleryReveal {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .screenshot-card {
             overflow: hidden;
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 8px;
+            animation: galleryReveal 0.4s ease both;
+        }
+
+        .screenshot-open {
+            display: block;
+            width: 100%;
+            padding: 0;
+            border: 0;
+            background: #050810;
+            cursor: zoom-in;
         }
 
         .screenshot-card img {
@@ -769,7 +958,11 @@
             width: 100%;
             aspect-ratio: 16 / 10;
             object-fit: contain;
-            background: #050810;
+            transition: transform 0.25s ease;
+        }
+
+        .screenshot-open:hover img {
+            transform: scale(1.035);
         }
 
         .screenshot-card figcaption {
@@ -778,13 +971,51 @@
             font-size: 0.85rem;
         }
 
-        .screenshot-empty {
-            grid-column: 1 / -1;
-            padding: 24px;
-            border: 1px dashed var(--border);
+        .screenshot-viewer {
+            width: min(1100px, calc(100% - 32px));
+            max-width: none;
+            max-height: min(92vh, 900px);
+            padding: 16px;
+            border: 1px solid var(--border);
             border-radius: 8px;
+            background: #090e18;
+            color: var(--text);
+        }
+
+        .screenshot-viewer[open] {
+            animation: galleryReveal 0.2s ease both;
+        }
+
+        .screenshot-viewer::backdrop {
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(5px);
+        }
+
+        .viewer-close {
+            display: block;
+            min-width: 44px;
+            min-height: 44px;
+            margin: 0 0 10px auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .screenshot-viewer img {
+            display: block;
+            width: 100%;
+            max-height: calc(92vh - 100px);
+            object-fit: contain;
+        }
+
+        .screenshot-viewer p {
+            margin: 10px 0 0;
             color: var(--muted);
             text-align: center;
+            font-family: monospace;
         }
 
         /* =========================================================
@@ -1029,6 +1260,7 @@
             <a href="#hardening">Hardening</a>
             <a href="#investigation">Investigation</a>
             <a href="#evidence">Evidence</a>
+            <a href="#screenshots">Images</a>
             <a href="#findings">Findings</a>
             <a href="#appendix">Appendix</a>
 
@@ -1317,6 +1549,16 @@
 
     </div>
 
+    <h3>Review an Event Log</h3>
+
+    <ol>
+        <li>Open Event Viewer with <code>eventvwr.msc</code>.</li>
+        <li>Expand <strong>Windows Logs</strong> and select the relevant log, such as Security or System.</li>
+        <li>Select <strong>Filter Current Log</strong> to narrow by event ID, level, account, and time range.</li>
+        <li>Open a matching event and review both the General and Details views. Record the provider, event ID, computer, timestamp and time zone, account, and message.</li>
+        <li>Export the original log as EVTX when it is evidence. Preserve the original and perform analysis on a working copy.</li>
+    </ol>
+
 </section>
 
 
@@ -1466,6 +1708,18 @@
         detailed information about activity occurring on a Windows
         system.
     </p>
+
+    <h3>Setup and Verify</h3>
+
+    <ol>
+        <li>Obtain Sysmon from Microsoft Sysinternals and verify the download before use.</li>
+        <li>Open an elevated PowerShell session in the extracted folder and review available options with <code>.&#92;Sysmon64.exe -?</code>.</li>
+        <li>Install in the authorized lab with <code>.&#92;Sysmon64.exe -accepteula -i</code>. Review and apply an approved configuration appropriate to the monitoring goal before relying on event coverage.</li>
+        <li>Confirm the service is running with <code>Get-Service Sysmon*</code>.</li>
+        <li>Open Event Viewer at Applications and Services Logs &gt; Microsoft &gt; Windows &gt; Sysmon &gt; Operational, or query it with <code>Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 20</code>.</li>
+        <li>Launch an approved benign test process, such as Notepad, and check for Sysmon Event ID 1. Review the process, parent, user, and command-line fields.</li>
+        <li>Record the configuration and time range; Sysmon coverage depends on configuration, and verbose rules can increase log volume.</li>
+    </ol>
 
     <div class="card-grid">
 
@@ -1888,44 +2142,91 @@ Where-Object {$_.Status -eq "Running"}</pre>
 
     <div class="card-grid">
 
-        <div class="card">
-            <h3>Account Logon</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Account Logon</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open <code>secpol.msc</code> and go to Security Settings &gt; Advanced Audit Policy Configuration &gt; System Audit Policies &gt; Account Logon.</li><li>Review Credential Validation and select Success and Failure to match the lab objective.</li><li>On domain controllers, review Kerberos Authentication Service and Kerberos Service Ticket Operations as appropriate.</li><li>Apply policy through the authorized local or domain policy source, then verify with <code>auditpol /get /category:"Account Logon"</code>.</li></ol>
+                <h4>What it records</h4>
+                <p>Authentication credential checks, including NTLM validation (for example, event 4776) and domain Kerberos activity (for example, events 4768, 4769, and 4771). Domain-controller events are generated on the validating server, not necessarily the workstation being accessed.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Account Management</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Account Management</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Account Management policy category in Advanced Audit Policy Configuration.</li><li>Review User Account Management and Security Group Management; enable Success and Failure according to the investigation need.</li><li>Verify effective settings with <code>auditpol /get /category:"Account Management"</code>.</li><li>In an authorized test environment, make one approved account or group change and confirm the resulting event in the Security log.</li></ol>
+                <h4>What it records</h4>
+                <p>Account and group creation, changes, enablement, disablement, deletion, and membership changes. Common examples include events 4720 (user created), 4722 (user enabled), 4725 (user disabled), and 4732 (member added to a local security group).</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Logon / Logoff</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Logon / Logoff</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Logon/Logoff policy category in Advanced Audit Policy Configuration.</li><li>Review Logon and Logoff; consider Special Logon and Other Logon/Logoff Events when required.</li><li>Set Success and Failure for the subcategories needed, then check with <code>auditpol /get /category:"Logon/Logoff"</code>.</li><li>Generate an approved interactive or remote sign-in test and verify the record in the Security log.</li></ol>
+                <h4>What it records</h4>
+                <p>Successful and failed logons (4624 and 4625), logoff activity (4634 and 4647), and special-privilege logons (4672). Use the logon ID to correlate related events on the same host.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Object Access</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Object Access</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Object Access policy category and select only relevant subcategories, such as File System, Registry, or Removable Storage.</li><li>For file and registry auditing, configure appropriate SACLs on the specific objects; enabling the audit subcategory alone does not generate object-access events.</li><li>Verify the effective audit settings with <code>auditpol /get /category:"Object Access"</code>.</li><li>Perform an approved access test against a lab object and inspect the Security log.</li></ol>
+                <h4>What it records</h4>
+                <p>Access attempts against audited objects, including events such as 4663 when the applicable policy and object SACL are configured. Scope auditing narrowly because broad object auditing can create substantial log volume.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Policy Change</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Policy Change</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Policy Change category and review Audit Policy Change, Authentication Policy Change, and relevant firewall or filtering-platform policy subcategories.</li><li>Enable Success and Failure where appropriate to record changes and failed attempts.</li><li>Verify with <code>auditpol /get /category:"Policy Change"</code>.</li><li>Make a documented, approved test-policy change in the lab and confirm it is logged, then restore the original setting and verify restoration.</li></ol>
+                <h4>What it records</h4>
+                <p>Changes to audit, authentication, authorization, and some firewall policies. Event 4719 is an example of a system audit policy change. Restrict who can change policy and retain a record of approved changes.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Privilege Use</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Privilege Use</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Privilege Use category and review Sensitive Privilege Use before enabling broader privilege auditing.</li><li>Choose Success and Failure based on the investigation objective and expected event volume.</li><li>Verify with <code>auditpol /get /category:"Privilege Use"</code>.</li><li>Perform an approved privileged action in the lab and verify the expected event and account in the Security log.</li></ol>
+                <h4>What it records</h4>
+                <p>Use of sensitive system privileges and related privileged operations, including events such as 4673 and 4674. These records provide context for privileged activity but do not, on their own, prove misuse.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>System</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>System</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the System category and review Security State Change, Security System Extension, System Integrity, and other subcategories relevant to the host.</li><li>Set Success and Failure as needed, then verify with <code>auditpol /get /category:"System"</code>.</li><li>Correlate resulting Security events with the System event log and record the host and time zone.</li></ol>
+                <h4>What it records</h4>
+                <p>Changes to system security state, security services, and integrity checks. For example, event 4616 can record a system time change, which may affect timeline analysis.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <h3>Detailed Tracking</h3>
-        </div>
+        <details class="card audit-policy-detail">
+            <summary><h3>Detailed Tracking</h3><p class="audit-policy-hint">Click for steps and details</p></summary>
+            <div class="audit-policy-content">
+                <h4>Steps</h4>
+                <ol><li>Open the Detailed Tracking category and review Process Creation and Process Termination for endpoint monitoring.</li><li>Enable only the subcategories needed and verify with <code>auditpol /get /category:"Detailed Tracking"</code>.</li><li>If process command-line capture is required, configure the separate command-line inclusion policy and assess whether arguments could contain secrets.</li><li>Run an approved test process and confirm event 4688 appears with the expected process details.</li></ol>
+                <h4>What it records</h4>
+                <p>Process starts and other detailed activity; event 4688 records process creation when configured. Process auditing can produce high event volume, and command-line arguments may contain sensitive information.</p>
+            </div>
+        </details>
 
     </div>
 
     <div class="info-box">
 
-        The objective is to generate useful security telemetry while
-        maintaining manageable log volume.
+        These are recommended configuration and verification steps; this report does not state that the audit settings were changed. Check effective policy before making changes because domain Group Policy may override local settings. Enable only the subcategories needed to balance useful telemetry and manageable log volume.
 
     </div>
 
@@ -2378,9 +2679,120 @@ EV-2026-LAB001-002.txt</pre>
 
     <h3>Screenshot Gallery</h3>
 
-    <div class="screenshot-gallery">
-        <p class="screenshot-empty">No screenshots added yet.</p>
-    </div>
+    <details id="screenshots" class="screenshot-disclosure">
+        <summary>View Images (18)</summary>
+
+        <div class="screenshot-gallery">
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 01: IMG-20260929-WA0012.jpg">
+                    <img src="screenshots/IMG-20260929-WA0012.jpg" alt="Cybersecurity lab screenshot 1" loading="lazy">
+                </button>
+                <figcaption>Screenshot 01</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 02: IMG-20260929-WA0015.jpg">
+                    <img src="screenshots/IMG-20260929-WA0015.jpg" alt="Cybersecurity lab screenshot 2" loading="lazy">
+                </button>
+                <figcaption>Screenshot 02</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 03: IMG-20260929-WA0016.jpg">
+                    <img src="screenshots/IMG-20260929-WA0016.jpg" alt="Cybersecurity lab screenshot 3" loading="lazy">
+                </button>
+                <figcaption>Screenshot 03</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 04: IMG-20260929-WA0017.jpg">
+                    <img src="screenshots/IMG-20260929-WA0017.jpg" alt="Cybersecurity lab screenshot 4" loading="lazy">
+                </button>
+                <figcaption>Screenshot 04</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 05: IMG-20260929-WA0018.jpg">
+                    <img src="screenshots/IMG-20260929-WA0018.jpg" alt="Cybersecurity lab screenshot 5" loading="lazy">
+                </button>
+                <figcaption>Screenshot 05</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 06: IMG-20260929-WA0019.jpg">
+                    <img src="screenshots/IMG-20260929-WA0019.jpg" alt="Cybersecurity lab screenshot 6" loading="lazy">
+                </button>
+                <figcaption>Screenshot 06</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 07: IMG-20260929-WA0020.jpg">
+                    <img src="screenshots/IMG-20260929-WA0020.jpg" alt="Cybersecurity lab screenshot 7" loading="lazy">
+                </button>
+                <figcaption>Screenshot 07</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 08: IMG-20260929-WA0021.jpg">
+                    <img src="screenshots/IMG-20260929-WA0021.jpg" alt="Cybersecurity lab screenshot 8" loading="lazy">
+                </button>
+                <figcaption>Screenshot 08</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 09: IMG-20260929-WA0022.jpg">
+                    <img src="screenshots/IMG-20260929-WA0022.jpg" alt="Cybersecurity lab screenshot 9" loading="lazy">
+                </button>
+                <figcaption>Screenshot 09</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 10: IMG-20260929-WA0023.jpg">
+                    <img src="screenshots/IMG-20260929-WA0023.jpg" alt="Cybersecurity lab screenshot 10" loading="lazy">
+                </button>
+                <figcaption>Screenshot 10</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 11: IMG-20260929-WA0024.jpg">
+                    <img src="screenshots/IMG-20260929-WA0024.jpg" alt="Cybersecurity lab screenshot 11" loading="lazy">
+                </button>
+                <figcaption>Screenshot 11</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 12: IMG-20260929-WA0025.jpg">
+                    <img src="screenshots/IMG-20260929-WA0025.jpg" alt="Cybersecurity lab screenshot 12" loading="lazy">
+                </button>
+                <figcaption>Screenshot 12</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 13: IMG-20260929-WA0026.jpg">
+                    <img src="screenshots/IMG-20260929-WA0026.jpg" alt="Cybersecurity lab screenshot 13" loading="lazy">
+                </button>
+                <figcaption>Screenshot 13</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 14: IMG-20260929-WA0027.jpg">
+                    <img src="screenshots/IMG-20260929-WA0027.jpg" alt="Cybersecurity lab screenshot 14" loading="lazy">
+                </button>
+                <figcaption>Screenshot 14</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 15: IMG-20260929-WA0028.jpg">
+                    <img src="screenshots/IMG-20260929-WA0028.jpg" alt="Cybersecurity lab screenshot 15" loading="lazy">
+                </button>
+                <figcaption>Screenshot 15</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 16: IMG-20260929-WA0029.jpg">
+                    <img src="screenshots/IMG-20260929-WA0029.jpg" alt="Cybersecurity lab screenshot 16" loading="lazy">
+                </button>
+                <figcaption>Screenshot 16</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 17: IMG-20260929-WA0030.jpg">
+                    <img src="screenshots/IMG-20260929-WA0030.jpg" alt="Cybersecurity lab screenshot 17" loading="lazy">
+                </button>
+                <figcaption>Screenshot 17</figcaption>
+            </figure>
+            <figure class="screenshot-card">
+                <button class="screenshot-open" type="button" data-caption="Screenshot 18: IMG-20260929-WA0031.jpg">
+                    <img src="screenshots/IMG-20260929-WA0031.jpg" alt="Cybersecurity lab screenshot 18" loading="lazy">
+                </button>
+                <figcaption>Screenshot 18</figcaption>
+            </figure>
+        </div>
+    </details>
 
     <h3>SHA-256 Evidence Hashing</h3>
 
@@ -2578,20 +2990,145 @@ EV-2026-LAB001-002.txt</pre>
 
     <div class="card-grid">
 
-        <div class="card"><h3>01</h3><p>Windows Security Event Log</p></div>
-        <div class="card"><h3>02</h3><p>Windows System Event Log</p></div>
-        <div class="card"><h3>03</h3><p>Sysmon Operational Log</p></div>
-        <div class="card"><h3>04</h3><p>PowerShell Operational Log</p></div>
-        <div class="card"><h3>05</h3><p>Measured Boot diagnostic files</p></div>
-        <div class="card"><h3>06</h3><p>Windows Defender configuration</p></div>
-        <div class="card"><h3>07</h3><p>Windows Firewall configuration</p></div>
-        <div class="card"><h3>08</h3><p>Local user list</p></div>
-        <div class="card"><h3>09</h3><p>Local administrator membership</p></div>
-        <div class="card"><h3>10</h3><p>Listening network ports</p></div>
-        <div class="card"><h3>11</h3><p>Relevant screenshots</p></div>
-        <div class="card"><h3>12</h3><p>Command output</p></div>
-        <div class="card"><h3>13</h3><p>SHA-256 hashes</p></div>
-        <div class="card"><h3>14</h3><p>Investigation timeline</p></div>
+        <details class="card collection-detail">
+            <summary><h3>01</h3><p>Windows Security Event Log</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Export the Security channel for the investigation window. Preserve event IDs, provider, account, computer name, and original timestamps so logon, privilege-use, and audit-policy events can be correlated.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Save an original EVTX export and analyze a separate working copy.</li><li>Record the time range, host, export time, and any relevant audit-policy gaps.</li><li>Protect the file because Security logs can contain sensitive account and activity details.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>02</h3><p>Windows System Event Log</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Export the System channel for the same time range. Include service start and stop, driver, shutdown, startup, and operating-system events that may explain or contextualize activity in other logs.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Preserve the original EVTX file and document the host and time zone.</li><li>Correlate records by timestamp and provider; proximity alone does not prove causation.</li><li>Note missing or overwritten periods that could limit the timeline.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>03</h3><p>Sysmon Operational Log</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Export <code>Microsoft-Windows-Sysmon/Operational</code>. Review process creation, network connections, file changes, and image-load events when those event types are enabled by the installed configuration.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Record the Sysmon service version and configuration used during collection.</li><li>Keep the raw EVTX alongside any filtered CSV or screenshots.</li><li>Filtering can omit context, so document event IDs and query criteria.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>04</h3><p>PowerShell Operational Log</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Export <code>Microsoft-Windows-PowerShell/Operational</code> for the relevant period. When logging is enabled, events such as 4103 and 4104 may provide module or script-block activity.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Logging coverage depends on policy and configuration; absence of an event is not proof a command did not run.</li><li>Retain the original EVTX and note the host, time range, and logging policy.</li><li>Review exports for credentials, tokens, or other secrets before sharing them.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>05</h3><p>Measured Boot diagnostic files</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Save available Measured Boot diagnostics and record the device model, firmware mode, Secure Boot state, and TPM status relevant to interpreting them.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Record the exact collection method, date, and system used.</li><li>Preserve the original diagnostic output; do not infer a boot compromise from a warning alone.</li><li>Include firmware or platform limitations that affect whether measurements are available.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>06</h3><p>Windows Defender configuration</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Capture Defender status and preferences, including protection state, engine and intelligence versions, exclusions, and relevant policy settings.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Use read-only queries such as <code>Get-MpComputerStatus</code> and <code>Get-MpPreference</code>.</li><li>Record collection time and whether policy is managed locally or centrally.</li><li>Review exclusions carefully; their presence alone does not establish malicious activity.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>07</h3><p>Windows Firewall configuration</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Record firewall profile state, default inbound and outbound actions, active profile, and rules relevant to the system under review.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Read-only commands such as <code>Get-NetFirewallProfile</code> and <code>Get-NetFirewallRule</code> can capture configuration.</li><li>Include rule direction, action, protocol, ports, program, and enabled state when applicable.</li><li>Save the output with host and timestamp; avoid changing policy during evidence collection.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>08</h3><p>Local user list</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Capture local account names, enabled state, and other relevant account properties at the time of review.</p>
+                <h4>Collection notes</h4>
+                <ul><li>A read-only query such as <code>Get-LocalUser</code> provides a point-in-time view.</li><li>Record the host, time, and method; the list does not include every identity source in a domain environment.</li><li>Compare against an approved baseline before labeling an account unexpected.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>09</h3><p>Local administrator membership</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Record the members of the local Administrators group, including whether each entry is a local account, domain account, or nested group where the system can resolve it.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Use a read-only query such as <code>Get-LocalGroupMember -Group Administrators</code>.</li><li>Capture the host and timestamp and retain the command output.</li><li>Membership indicates privilege, not intent; assess it against the authorized baseline.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>10</h3><p>Listening network ports</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Capture listening TCP endpoints and relevant UDP endpoints together with local address, port, process ID, and process name.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Use read-only commands such as <code>Get-NetTCPConnection -State Listen</code> and <code>Get-NetUDPEndpoint</code>.</li><li>Record collection time because network state changes frequently.</li><li>A listening port is not by itself evidence of compromise; verify the owning process and expected service.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>11</h3><p>Relevant screenshots</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Capture relevant interface state, event details, configuration, or command output with enough context to identify the system and observation.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Keep the original image file and record its filename, capture time, host, and related evidence ID.</li><li>A screenshot supplements original logs and files; it does not replace them.</li><li>Check for visible usernames, email addresses, tokens, or other sensitive data before publication.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>12</h3><p>Command output</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Save the exact command, unaltered output, execution context, collection time, and exit status for each relevant query.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Prefer a text transcript or exported file over retyped results.</li><li>Note shell version, host, and whether elevated privileges were used.</li><li>Redact secrets only in a documented sharing copy and retain the protected original.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>13</h3><p>SHA-256 hashes</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Generate a SHA-256 digest for every collected file and maintain a manifest linking each digest to the evidence ID and filename.</p>
+                <h4>Collection notes</h4>
+                <ul><li>For example, use <code>Get-FileHash -Algorithm SHA256</code> on the original after acquisition.</li><li>Recalculate after transfer to check that the copy has not changed.</li><li>A matching hash supports integrity since hashing; it does not prove the source or interpretation is authentic.</li></ul>
+            </div>
+        </details>
+
+        <details class="card collection-detail">
+            <summary><h3>14</h3><p>Investigation timeline</p><p class="collection-hint">Select to view collection details</p></summary>
+            <div class="collection-content">
+                <h4>What to collect</h4>
+                <p>Build a chronological record with timestamp, time zone, host, source, event or evidence ID, and a concise description of each observation.</p>
+                <h4>Collection notes</h4>
+                <ul><li>Retain original timestamps and document any time normalization.</li><li>Link each entry to its source file so another reviewer can reproduce the finding.</li><li>Separate observed facts from hypotheses; temporal order alone does not establish causality.</li></ul>
+            </div>
+        </details>
 
     </div>
 
@@ -2877,45 +3414,58 @@ EV-2026-LAB001-002.txt</pre>
 
     <div class="card">
 
-<pre>TEST ID:
-DATE:
-OPERATOR:
+<pre>TEST ID: TR-2026-001
+DATE: 2026-09-29
+OPERATOR: Not recorded in the report
 
 PURPOSE:
+Review the TPM-WMI 1040 and DistributedCOM 10016 System-log events and assess their timing and available context without assuming causation.
 
-SOURCE SYSTEM:
+SOURCE SYSTEM: Windows endpoint Vaskar
 
-TARGET SYSTEM:
+TARGET SYSTEM: Vaskar (local System log; no separate target is documented)
 
 AUTHORIZATION:
+The report identifies this as an authorized home-lab environment. A separate authorization record is not included.
 
 TOOL:
+Windows Event Viewer; PowerShell Get-WinEvent query documented in the report. Query execution is not independently recorded.
 
-TOOL VERSION:
+TOOL VERSION: Not recorded
 
 START TIME:
+Test execution time not recorded. Event timestamps begin at 2026-09-29 18:53:42.
 
 END TIME:
+Test execution time not recorded. Event timestamps end at 2026-09-29 18:53:45. Time zone not recorded.
 
 COMMAND/ACTION:
+Review the Vaskar System log and the surrounding 2026-09-29 18:53:30-18:54:00 interval. The report documents a Get-WinEvent query for this interval; it does not confirm when or by whom the query was run.
 
 EXPECTED RESULT:
+Record each event's provider, ID, account, message, and timestamp; preserve source evidence; assess whether the records are related only when supporting evidence exists.
 
 ACTUAL RESULT:
+The report records DistributedCOM Event 10016 at 18:53:42 and TPM-WMI Event 1040 at 18:53:45. The TPM event reports a failed pre-attestation health check but does not identify the failed component. The events are three seconds apart; no causal relationship is established.
 
-EVIDENCE ID:
+EVIDENCE ID: EV-2026-001 (TPM-WMI 1040); EV-2026-002 (DistributedCOM 10016)
 
-HASH:
+HASH: Not calculated or recorded; the evidence register still lists both hashes as "To calculate".
 
 OBSERVATION:
+The DCOM event reports a Local Activation permission warning for NETWORK SERVICE. The TPM event references a Measured Boot diagnostic file. Event proximity alone does not demonstrate compromise or causation.
 
 CONCLUSION:
+Partially documented. Two event records and their timestamps are reported, but the TPM failure detail, surrounding-event analysis, and any causal link remain unverified.
 
 REMEDIATION:
+No remediation is recorded as performed. Preserve and review the referenced Measured Boot diagnostic and surrounding System events. Do not change DCOM permissions based only on this warning.
 
 VERIFICATION:
+No follow-up test or verification result is recorded.
 
-NOTES:</pre>
+NOTES:
+Event timestamps are not test start/end times. Collector identity, tool version, time zone, original log exports, and hash values are not provided.</pre>
 
     </div>
 
@@ -2934,35 +3484,36 @@ NOTES:</pre>
 
     <div class="card">
 
-<pre>EVIDENCE ID:
+<pre>EVIDENCE ID: EV-2026-001
 
-TEST ID:
+TEST ID: TR-2026-001
 
-FILENAME:
+FILENAME: TPM-Event-1040.txt (listed in the report; file not independently verified)
 
-EVIDENCE TYPE:
+EVIDENCE TYPE: Windows System event log record
 
-SOURCE SYSTEM:
+SOURCE SYSTEM: Vaskar (System log; Microsoft-Windows-TPM-WMI)
 
-COLLECTED BY:
+COLLECTED BY: Not recorded; Vaskar is identified as the source computer, not the collector
 
-DATE:
+DATE: 2026-09-29
 
-TIME:
+TIME: 18:53:45 (event timestamp; time zone not recorded)
 
 DESCRIPTION:
+TPM-WMI Event ID 1040. The report states that pre-attestation health checks identified a critical failed component; the event alone does not identify that component or establish compromise. Referenced diagnostic path: C:\WINDOWS\Logs\MeasuredBoot\0000000089-0000000000.json
 
-HASH ALGORITHM:
+HASH ALGORITHM: SHA-256 (specified by the report's hashing procedure)
 
-SHA-256:
+SHA-256: Not calculated or recorded; the evidence register says "To calculate"
 
-STORAGE LOCATION:
+STORAGE LOCATION: Evidence storage location not recorded. The path above is the referenced source diagnostic, not a documented evidence repository.
 
-ORIGINAL PRESERVED:
+ORIGINAL PRESERVED: Not recorded
 
-WORKING COPY CREATED:
+WORKING COPY CREATED: Not recorded
 
-CHAIN OF CUSTODY:</pre>
+CHAIN OF CUSTODY: Not documented; collector, handling events, and transfer timestamps are unavailable in the report.</pre>
 
     </div>
 
@@ -2981,38 +3532,58 @@ CHAIN OF CUSTODY:</pre>
 
     <div class="card-grid">
 
-        <div class="card">
-            <div class="card-icon">01</div>
-            <h3>Monitoring</h3>
-            <p>
-                Windows Event Viewer and security logs examined.
-            </p>
-        </div>
+        <details class="card summary-detail">
+            <summary>
+                <div class="card-icon">01</div>
+                <h3>Monitoring</h3>
+                <p>Windows Event Viewer and security logs examined.</p>
+            </summary>
+            <div class="summary-content">
+                <h4>Review steps</h4>
+                <ol><li>Open Event Viewer and review the Security and System logs for the investigation window.</li><li>Filter for relevant event IDs and inspect the provider, computer, account, timestamp, and event details.</li><li>Correlate records by time and host, but do not treat proximity alone as proof of causation.</li><li>Export relevant EVTX records and preserve the original before analyzing a working copy.</li></ol>
+                <h4>Documented observations</h4>
+                <p>The report records TPM-WMI Event 1040 at 18:53:45 and DistributedCOM Event 10016 at 18:53:42 on Vaskar. The three-second interval is noted for correlation; the report does not establish a causal relationship.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <div class="card-icon">02</div>
-            <h3>Telemetry</h3>
-            <p>
-                Sysmon process and system monitoring documented.
-            </p>
-        </div>
+        <details class="card summary-detail">
+            <summary>
+                <div class="card-icon">02</div>
+                <h3>Telemetry</h3>
+                <p>Sysmon process and system monitoring documented.</p>
+            </summary>
+            <div class="summary-content">
+                <h4>Review steps</h4>
+                <ol><li>Confirm the Sysmon service is present and running with <code>Get-Service Sysmon*</code>.</li><li>Open the Sysmon Operational log or query it with <code>Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 20</code>.</li><li>For process activity, inspect Event ID 1 and record process, parent process, user, and command line; use Event IDs 3 and 22 for network connections and DNS queries when enabled.</li><li>Record the Sysmon configuration and time range because event coverage depends on configuration.</li></ol>
+                <p>The summary documents monitoring procedures; it does not provide a specific Sysmon finding or configuration version.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <div class="card-icon">03</div>
-            <h3>Hardening</h3>
-            <p>
-                Firewall, Defender, users, services and auditing reviewed.
-            </p>
-        </div>
+        <details class="card summary-detail">
+            <summary>
+                <div class="card-icon">03</div>
+                <h3>Hardening</h3>
+                <p>Firewall, Defender, users, services and auditing reviewed.</p>
+            </summary>
+            <div class="summary-content">
+                <h4>Review steps</h4>
+                <ol><li>Capture Defender state with <code>Get-MpComputerStatus</code> and review configured exclusions before drawing conclusions.</li><li>Review active firewall profiles with <code>Get-NetFirewallProfile</code> and inspect relevant enabled rules.</li><li>Inventory local accounts and administrators with <code>Get-LocalUser</code> and <code>Get-LocalGroupMember -Group Administrators</code>.</li><li>Review service state and effective audit policy; compare each result with an approved baseline before changing settings.</li><li>Document any change separately and verify the effective configuration afterward.</li></ol>
+                <p>The report says these areas were reviewed; it does not state that configuration changes were made or provide complete baseline results.</p>
+            </div>
+        </details>
 
-        <div class="card">
-            <div class="card-icon">04</div>
-            <h3>Evidence</h3>
-            <p>
-                Evidence naming, hashing and chain-of-custody procedures
-                documented.
-            </p>
-        </div>
+        <details class="card summary-detail">
+            <summary>
+                <div class="card-icon">04</div>
+                <h3>Evidence</h3>
+                <p>Evidence naming, hashing and chain-of-custody procedures documented.</p>
+            </summary>
+            <div class="summary-content">
+                <h4>Handling steps</h4>
+                <ol><li>Assign a unique evidence ID and record the source system, collector, date, time, and description.</li><li>Preserve the original file and perform examination on a documented working copy.</li><li>Calculate a SHA-256 digest with <code>Get-FileHash -Algorithm SHA256</code> and record it in the evidence register.</li><li>Log every transfer or handling event, including who handled the item, when, and why.</li><li>Recalculate the hash after transfer to check that the copy has not changed.</li></ol>
+                <p>The report's evidence register still marks the hashes as "To calculate" and does not provide complete storage or chain-of-custody details.</p>
+            </div>
+        </details>
 
     </div>
 
@@ -3047,6 +3618,69 @@ CHAIN OF CUSTODY:</pre>
     </p>
 
 </footer>
+
+<dialog class="screenshot-viewer" aria-label="Screenshot viewer">
+    <button class="viewer-close" type="button" aria-label="Close image viewer">×</button>
+    <img src="" alt="">
+    <p></p>
+</dialog>
+
+<script>
+    document.querySelectorAll("main section > h2").forEach((heading) => {
+        const section = heading.parentElement;
+        const topic = document.createElement("details");
+        const summary = document.createElement("summary");
+
+        topic.className = "topic-detail";
+
+        section.insertBefore(topic, heading);
+        topic.append(summary);
+        summary.append(heading);
+
+        while (topic.nextSibling) {
+            topic.append(topic.nextSibling);
+        }
+    });
+
+    const expandLinkedTopic = () => {
+        const target = window.location.hash
+            ? document.getElementById(window.location.hash.slice(1))
+            : null;
+        const topic = target?.closest(".topic-detail")
+            || target?.querySelector(":scope > .topic-detail");
+
+        if (topic) {
+            topic.open = true;
+        }
+    };
+
+    expandLinkedTopic();
+    window.addEventListener("hashchange", expandLinkedTopic);
+
+    const screenshotViewer = document.querySelector(".screenshot-viewer");
+    const viewerImage = screenshotViewer.querySelector("img");
+    const viewerCaption = screenshotViewer.querySelector("p");
+
+    document.querySelectorAll(".screenshot-open").forEach((button) => {
+        button.addEventListener("click", () => {
+            const thumbnail = button.querySelector("img");
+            viewerImage.src = thumbnail.src;
+            viewerImage.alt = thumbnail.alt;
+            viewerCaption.textContent = button.dataset.caption;
+            screenshotViewer.showModal();
+        });
+    });
+
+    screenshotViewer.querySelector(".viewer-close").addEventListener("click", () => {
+        screenshotViewer.close();
+    });
+
+    screenshotViewer.addEventListener("click", (event) => {
+        if (event.target === screenshotViewer) {
+            screenshotViewer.close();
+        }
+    });
+</script>
 
 </body>
 </html>
