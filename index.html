@@ -747,6 +747,47 @@
         }
 
         /* =========================================================
+           SCREENSHOT GALLERY
+        ========================================================= */
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .screenshot-card {
+            overflow: hidden;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .screenshot-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: contain;
+            background: #050810;
+        }
+
+        .screenshot-card figcaption {
+            padding: 12px 14px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .screenshot-empty {
+            grid-column: 1 / -1;
+            padding: 24px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        /* =========================================================
            DOCUMENTATION FORM
         ========================================================= */
 
@@ -2333,6 +2374,12 @@ EV-2026-LAB001-002.txt</pre>
 
         </table>
 
+    </div>
+
+    <h3>Screenshot Gallery</h3>
+
+    <div class="screenshot-gallery">
+        <p class="screenshot-empty">No screenshots added yet.</p>
     </div>
 
     <h3>SHA-256 Evidence Hashing</h3>
