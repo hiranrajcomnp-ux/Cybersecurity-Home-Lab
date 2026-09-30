@@ -1,0 +1,74 @@
+WINDOWS NETWORK SCAN AND AVAILABILITY TEST REPORT
+
+Report type: Home lab test summary
+Report date/time: 2026-09-30 03:54:58 ktm
+Targets: 192.168.18.10 (Windows candidate), 192.168.18.1 (gateway), and 192.168.18.0/24 host discovery
+Test date/time: Nmap scans shown at 2026-09-29 21:11-21:17 UTC+05:45; other test times not recorded
+Status: Observations documented; several test details were not recorded
+
+1. OBJECTIVE
+Assess basic network reachability and exposed services on the lab machine, and document the reported network issues and DoS activity.
+
+2. TEST SCOPE
+The activity described here was performed against the Windows machine in the cybersecurity home lab. Do not apply these tests to systems or networks without explicit authorization.
+
+3. USER-REPORTED TEST RESULTS
+- The user reported packet loss during network issues and that a DoS test was performed. The screenshots do not show the DoS activity or its impact.
+- DoS test parameters, timing, packet-loss rate, and impact were not provided.
+
+4. SCREENSHOT ANALYSIS
+- The terminal shows Linux network interface and route information. Interface wlan0 is UP with address 192.168.1.2/24; eth1 is UP with address 192.168.18.194/24; eth0 is DOWN with NO-CARRIER.
+- The displayed routes include a default gateway of 192.168.18.1 via eth1 and a default gateway of 192.168.1.1 via wlan0. The route output lists source address 192.168.18.10 for eth1, which does not match the eth1 address shown in the interface output (192.168.18.194). This discrepancy should be checked on the machine.
+- A completed ping to 192.168.18.10 reports 4 packets transmitted, 4 received, 0% packet loss, and round-trip min/avg/max of 0.376/0.415/0.454 ms (mdev 0.027 ms).
+- Both screenshots show a subsequent ping to 192.168.18.10 in progress, with a reply visible; neither shows final statistics for that ping.
+- Nmap 7.99 host discovery (`sudo nmap -sn 192.168.18.10`) reports the host up with 0.00037-second latency. It reports MAC address 10:FF:E0:F6:56:18, identified by Nmap as Giga-byte Technology. Host discovery does not scan ports.
+- Nmap service/version detection (`nmap -sV 192.168.18.10`) reports the host up and 993 filtered TCP ports (no response). It reports these open ports:
+	21/tcp   ftp             Microsoft ftpd
+	22/tcp   ssh             OpenSSH for Windows 9.5 (protocol 2.0)
+	80/tcp   http            Microsoft IIS httpd 10.0
+	135/tcp  msrpc           Microsoft Windows RPC
+	139/tcp  netbios-ssn     Microsoft Windows netbios-ssn
+	445/tcp  microsoft-ds?   Service identification uncertain
+	7070/tcp ssl/realserver? Service identification uncertain
+- Nmap reports service information indicating Windows. OS detection (`nmap -O`) gives several possible Windows-version matches, but explicitly warns that its results may be unreliable because it did not find at least one open and one closed port. It reports network distance of one hop.
+- Nmap host discovery of 192.168.18.0/24 (`nmap -sn`) found six responding addresses: 192.168.18.1, .5, .10, .19, .28, and .32. The scans shown completed in 2.28 and 2.55 seconds, each scanning 256 addresses. The output identifies .1 as Huawei, .5 as an Honor device, and .10 as Giga-byte Technology; .28 and .32 have unknown vendors, and no MAC address is shown for .19. A saved `host-discovery.txt` output confirms the scan at 21:16 on 2026-09-29 (+0545).
+- A separate service/version scan of 192.168.18.1 at 21:15 (+0545) reports the host up with 0.0030-second latency and MAC address 0C:84:08:2D:3E:5C (Huawei Technologies). It reports 994 closed TCP ports and the following other results:
+	21/tcp   filtered   ftp
+	22/tcp   filtered   ssh
+	23/tcp   filtered   telnet
+	53/tcp   open       domain (generic DNS response: SERVFAIL)
+	80/tcp   open       ssl/http
+	8022/tcp filtered   oa-system (service label as reported by Nmap)
+- Nmap reports one unrecognized service fingerprint on 192.168.18.1 despite receiving a response; the screenshot does not clearly establish which service produced it. The scan completed in 21.81 seconds.
+- Additional Nmap scans of 192.168.18.10 at 21:33 on 2026-09-29 (+0545) report seven open TCP ports: 21/ftp, 22/ssh, 80/http, 135/msrpc, 139/netbios-ssn, 445/microsoft-ds, and 7070/realserver. A SYN scan completed in 8.24 seconds and reported 993 filtered TCP ports. A UDP scan completed in 17.56 seconds and reported 137/udp open (netbios-ns), with 999 other UDP ports in the open|filtered state (no response); open|filtered does not confirm that those ports are open. A combined UDP/SYN/service scan is started in the screenshot, but its results are not shown.
+- Linux `ss` socket listings show local UDP and TCP sockets on the scanning/capture host. Visible TCP listeners include wildcard-bound ports 22, 53, 80, 139, 443, 445, 1514, 1515, 8834, 19999, 3389, 55000, and 7070; several other listeners are bound to loopback, including ports 4317, 8125, 9200, and 9300. The process names are not visible. These are local sockets, not additional Nmap findings about 192.168.18.10; wildcard binding alone does not prove reachability through a firewall.
+- The TCP socket listing also shows established connections to loopback services and to external HTTPS peers 34.107.243.93:443 and 148.113.9.160:443, as well as a connection involving 192.168.18.10. The screenshots do not identify the owning processes or explain the purpose of these sessions.
+- A Windows command prompt shows `ping google.com` resolving to IPv6 address 2404:6800:4013:811::64. The sample reports 4 sent, 2 received, 2 lost (50% loss), with 320-322 ms round-trip times and a 321 ms average. This is a separate test to Google over IPv6, not a measurement of packet loss to the lab target.
+- A Wireshark capture screenshot shows traffic between 192.168.18.19 and 192.168.18.10, including repeated SIP OPTIONS, DNS, BOOTP/TFTP-labeled packets, and other traffic. It also shows an established TCP ACK/keep-alive exchange between 148.113.9.160:443 and 192.168.18.19. The display-filter text `TCP.PORT == 443` appears red, indicating that the filter may be invalid; the displayed packets include non-TCP and non-443 traffic and should not be treated as a verified 443-only capture.
+- A separate Wireshark view uses a green `dns` display filter and shows DNS queries and responses between 192.168.18.19 and 192.168.18.1. Visible traffic includes lookups for Microsoft, WhatsApp, and local names; some `VASKAR` lookups receive “No such name” responses. Several packets are labeled malformed or unknown by Wireshark. The images do not provide enough packet detail to determine whether these reflect expected application traffic, malformed traffic, or decoding limitations.
+- Windows Security log screenshots show Event ID 4625 failed-logon events and Event ID 4624 successful-logon events on 2026-09-25 through 2026-09-29. The shown excerpts do not include account names, logon types, or source addresses, so the events cannot be attributed to a person, scan, or DoS test.
+- Windows System Event ID 2004, logged 2026-09-29 at 9:28:55 PM, reports that Windows diagnosed low virtual memory. The dialog attributes about 30.1 GB and 29.6 GB of virtual memory consumption to two Wireshark processes and about 495 MB to Chrome. This displayed time is about four minutes before the 21:33 Nmap scans if the Windows and Linux clocks use the same timezone; the screenshots do not establish clock alignment, why the processes used that memory, or whether the condition was caused by network testing.
+
+5. ASSESSMENT
+Nmap and ping show 192.168.18.10 responding; repeated TCP scans list seven open ports, and the UDP scan finds 137/udp open. The other 999 UDP ports reported open|filtered are inconclusive. The subnet scan found five additional responding addresses. The gateway scan found DNS and ssl/http open, with several filtered ports; SERVFAIL alone is not proof of a vulnerability. A separate Google IPv6 ping had 50% loss, while the earlier four-packet ping to 192.168.18.10 had no loss; these are different destinations and test samples, so they are not contradictory. A low-virtual-memory warning appears roughly four minutes before the 21:33 scans if the displayed clocks align, making it worth correlating with system and capture activity but not proving causation. The screenshots also document successful and failed logons, but lack the details needed to link those events or the memory warning to the scans or reported DoS. The eth1 interface address (192.168.18.194) and route source address (192.168.18.10) differ and should be checked.
+
+6. RECOMMENDATIONS
+- Confirm that 192.168.18.10 is the intended Windows host and investigate the eth1 address/source discrepancy.
+- Verify each open service on the Windows host and restrict or disable services that are not required. In particular, assess whether FTP, HTTP, RPC, and NetBIOS-related ports should be reachable from this network; do not treat a detected service alone as proof of a vulnerability.
+- Verify the uncertain service identifications on ports 445 and 7070, and corroborate the OS fingerprint using the host itself or authorized system records.
+- Identify the responding devices at 192.168.18.19, .28, and .32, and confirm that each device in the discovered subnet is expected.
+- Confirm whether DNS and the web service on 192.168.18.1 are required and intended to be reachable; investigate the SERVFAIL response and validate the service on port 80.
+- Review the UDP NetBIOS service on 192.168.18.10 and the local listening services on the scanning host; disable or restrict only services confirmed unnecessary, and review host firewall rules.
+- Investigate the Windows low-memory event by checking process memory trends and system resource logs; verify clock/timezone alignment and correlate its timestamp with capture and test activity before assigning a cause.
+- Review Event IDs 4624 and 4625 with the full event details (account, logon type, source address, and timestamp) to determine whether the logons were expected.
+- Repeat the Google IPv6 connectivity test and compare it with other destinations and the local gateway to isolate where packet loss occurs. Keep this result separate from measurements to 192.168.18.10.
+- Correct the Wireshark display filter and inspect complete packet details before classifying the SIP, DNS, BOOTP, or TFTP traffic as abnormal.
+- Record ping results before, during, and after testing, including packet counts and loss percentage.
+- Keep any repeat DoS exercise isolated and authorized, define a short test window, and monitor the Windows host and network equipment.
+- Review Windows Firewall and relevant system/network logs for connectivity issues and test impact.
+
+7. LIMITATIONS
+The screenshots show Nmap host discovery, TCP/UDP scans and service/version results for .10 and .1, an OS-detection attempt, interface/routes, socket listings, packet captures, ping output, and selected Windows event-log excerpts.
+ Nmap service and OS identification are estimates; OS detection includes an explicit reliability warning, and one router service was not identified. The socket listing does not identify owning processes, 
+ the Wireshark capture is partial and includes a likely invalid display filter, and the event-log excerpts omit key attribution fields. 
+ The screenshots do not show a DoS command, its traffic volume, or a direct causal link between the DoS report, packet loss, memory warning, or logon events. No complete event exports, packet capture file, or detailed test parameters were supplied.
